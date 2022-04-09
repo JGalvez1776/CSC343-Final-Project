@@ -1,0 +1,48 @@
+body {
+    background-color: #121213;
+    color: #ffffff;
+    font-family: 'ClearSans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: xx-large;
+}
+
+.buttonsBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3%;
+}
+
+#gameTable {
+    display: flex;
+    justify-content: center;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+td {
+    padding: 5px;
+}
+
+.gameButton {
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    margin: 0px;
+    background-color: #ffffff;
+}
+
+.button {
+    border-radius: 20px;
+    width: 50%;
+    height: auto;
+    font-size: 64px;
+}
+
+.titleBar {
+    text-align: center;
+    font-size: 64px;
+}
+
+#title {
+    font-size: 32px;
+}
