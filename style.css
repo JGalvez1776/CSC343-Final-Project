@@ -23,9 +23,21 @@ td {
     padding: 5px;
 }
 
+.hoverspot:hover {
+    opacity: 1;
+}
+
+.hoverspot {
+    height: 2.3em;
+    width: 2.3em;
+    opacity: 0;
+    background-color: white;
+    border-radius: 100%;
+}
+
 .gameButton {
-    height: 80px;
-    width: 80px;
+    height: 2.3em;
+    width: 2.3em;
     border-radius: 100%;
     margin: 0px;
     background-color: #ffffff;

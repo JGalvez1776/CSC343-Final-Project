@@ -3,7 +3,8 @@ var HEIGHT = 6;
 var player = 0;
 var board = Array.from(Array(HEIGHT), () => new Array(WIDTH));
 var count = 0;
-var colors = ["#FF0000", "#0000FF"]
+var colors = ["#FF0000", "#0000FF"];
+var black = "#121213";
 var canClick = false;
 var moves = [];
 
@@ -43,6 +44,7 @@ function columnClicked(x) {
             return;
         }
         player = (player + 1) % 2;
+        setPlayerColor(colors[player]);
         canClick = true;
     }
 }
@@ -103,13 +105,52 @@ function place(x) {
     return insertIndex;
 }
 
+function setPlayerColor(color) {
+    var hovers = document.querySelectorAll(".hoverspot");
+    
+    for (var i = 0; i < WIDTH; i++) {
+        hovers[i].style.backgroundColor = color;
+    }
+    
+}
+
+function getXIndex(gameButton) {
+    row = gameButton.parentNode.parentNode;
+    children = row.children;
+    i = 0;
+    while (i < 7 && children[i] != gameButton.parentNode) {
+        i++;
+    }
+    return i;
+}
+
+function setColumnOpacity(index, value) {
+    row = document.querySelectorAll(".hoverspot");
+    row[index].style.opacity=value;
+}
+
 function onLoad() {
     console.log("Initalized");
+    setPlayerColor(colors[0]);
     for (var y = 0; y < HEIGHT; y++) {
         for (var x = 0; x < WIDTH; x++) {
             board[y][x] = -1;
         }
     }
+
+    squares = document.querySelectorAll(".gameButton");
+    for (var i = 0; i < WIDTH * HEIGHT; i++) {
+        square = squares[i];
+        square.addEventListener("mouseover", function() {
+            var x = getXIndex(this);
+            setColumnOpacity(x, "1");
+        });
+        square.addEventListener("mouseout", function() {
+            var x = getXIndex(this);
+            setColumnOpacity(x, "0"); 
+        });
+    }
+
     canClick = true;
 }
 
