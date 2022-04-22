@@ -11,13 +11,9 @@ var moves = [];
 // TODO: 
 // - Save the moves log to replay games/leaderboards
 //      Look into localStorage
-// - Check diagonals to see if the game is over
 // - Add button to play again
 // - Maybe add an animation to the home screen
-// - Fix bug where game ends after a column is full then clicked
-//           FIXED
 // - Add outline to board 
-// - Add draw support
 
 
 // 7 wide 
@@ -43,7 +39,11 @@ function columnClicked(x) {
         var result = determineResult();
         if (result != -1) {
             console.log(moves);
-            alert("Player " + String(player + 1) + " Wins!");
+            if (result == 0) {
+                alert("Draw")
+            } else {
+                alert("Player " + String(player + 1) + " Wins!");
+            }
             return;
         }
         player = (player + 1) % 2;
@@ -89,14 +89,37 @@ function determineResult() {
     }
 
     // Checks up-left-to-down-right
+    for (var y = 0; y < HEIGHT - 3; y++) {
+        for (var x = 0; x < WIDTH - 3; x++) {
+            var result = check(board[y][x], board[y + 1][x + 1],
+                               board[y + 2][x + 2], board[y + 3][x + 3]);
+            if (result != -1) {
+                return result;
+            }
+        }
+    }
 
     // checks down-left-to-down-right
+
+    for (var y = HEIGHT - 1; y > 2; y--) {
+        for (var x = 0; x < 4; x++) {
+            var result = check(board[y][x], board[y - 1][x + 1],
+                board[y - 2][x + 2], board[y - 3][x + 3]);
+            if (result != -1) {
+                console.log("x: " + x + " y: " + y);
+                return result;
+            }
+        }
+    }
+
+    if (moves.length == HEIGHT * WIDTH) 
+        return 0;
 
     return -1;
 }
 
 function check(a, b, c, d) {
-    return a == b && b == c && c == d ? a : -1;
+    return a != -1 && a == b && b == c && c == d ? a : -1;
 }
 
 function place(x) {
