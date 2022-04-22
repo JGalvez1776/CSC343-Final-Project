@@ -19,6 +19,10 @@ body {
     border-spacing: 0px;
 }
 
+#gameSection {
+    border-style: solid;
+}
+
 td {
     padding: 5px;
 }
@@ -38,9 +42,10 @@ td {
 .gameButton {
     height: 2.3em;
     width: 2.3em;
+    border: 2px solid #d8d8d8;
     border-radius: 100%;
     margin: 0px;
-    background-color: #ffffff;
+    background-color: #121213;
 }
 
 .button {
@@ -50,6 +55,14 @@ td {
     font-size: 64px;
 }
 
+#resetButton {
+    border-radius: 20px;
+    width: 75%;
+    height: auto;
+    font-size: 64px;
+}
+
+
 .titleBar {
     text-align: center;
     font-size: 64px;
@@ -57,4 +70,22 @@ td {
 
 #title {
     font-size: 32px;
+}
+
+#games {
+    display: flex;
+    justify-content: center;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    font-size: 2em;
+
+}
+
+#leaderboard th {
+    text-align: left;
+}
+
+#leaderboard td {
+    width: 400px;
+    text-align: left;
 }

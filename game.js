@@ -10,10 +10,9 @@ var moves = [];
 
 // TODO: 
 // - Save the moves log to replay games/leaderboards
-//      Look into localStorage
 // - Add button to play again
 // - Maybe add an animation to the home screen
-// - Add outline to board 
+// - Add outline to board???
 
 
 // 7 wide 
@@ -38,19 +37,47 @@ function columnClicked(x) {
         moves.push(x);
         var result = determineResult();
         if (result != -1) {
-            console.log(moves);
+            console.log("Moves: " + moves);
+            var info = document.cookie;
+            
             if (result == 0) {
+                document.cookie = info + "0" + moves + "/";
                 alert("Draw")
+                
             } else {
+                document.cookie = info + String(player + 1) + moves + "/" ;
                 alert("Player " + String(player + 1) + " Wins!");
             }
+            document.getElementById("top").innerHTML = 
+                "<td align=\"center\" colspan=\"7\">\
+                <button id=\"resetButton\"onclick=\"newGame()\">New Game</button>\
+                </td>";
             return;
         }
         player = (player + 1) % 2;
         setPlayerColor(colors[player]);
-        
+        if (board[HEIGHT - 1][x] != -1) {
+            setColumnOpacity(x, "0");   
+        }
     }
     canClick = true;
+}
+
+async function drawAnimation() {
+    var delay = 125;
+    for (var y = HEIGHT - 1; y >= 0; y--) {
+        for (var x = 0; x < WIDTH; x++) {
+            var canvas = document.getElementById(String(y)).children[x].children[0];
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#121213";
+            ctx.fillRect(0, 0, 500, 500);
+            if (board[y][x] != -1) {
+                await new Promise(r => setTimeout(r, delay));
+            }
+            
+        }
+    }
+    
 }
 
 function updateBoard(x, y, player) {
@@ -72,7 +99,7 @@ function determineResult() {
             var result = check(board[y][x], board[y][x + 1],
                 board[y][x + 2], board[y][x + 3]);
             if (result != -1) {
-                return result;
+                return 1;
             }
         }
     }
@@ -83,7 +110,7 @@ function determineResult() {
             var result = check(board[y][x], board[y + 1][x],
                 board[y + 2][x], board[y + 3][x]);
             if (result != -1) {
-                return result;
+                return 1;
             }
         }
     }
@@ -94,7 +121,7 @@ function determineResult() {
             var result = check(board[y][x], board[y + 1][x + 1],
                                board[y + 2][x + 2], board[y + 3][x + 3]);
             if (result != -1) {
-                return result;
+                return 1;
             }
         }
     }
@@ -107,7 +134,7 @@ function determineResult() {
                 board[y - 2][x + 2], board[y - 3][x + 3]);
             if (result != -1) {
                 console.log("x: " + x + " y: " + y);
-                return result;
+                return 1;
             }
         }
     }
@@ -134,11 +161,9 @@ function place(x) {
 
 function setPlayerColor(color) {
     var hovers = document.querySelectorAll(".hoverspot");
-    
     for (var i = 0; i < WIDTH; i++) {
         hovers[i].style.backgroundColor = color;
-    }
-    
+    }   
 }
 
 function getXIndex(gameButton) {
@@ -168,19 +193,28 @@ function onLoad() {
     squares = document.querySelectorAll(".gameButton");
     for (var i = 0; i < WIDTH * HEIGHT; i++) {
         square = squares[i];
+        square.addEventListener("click", function() {
+            var x = getXIndex(this);
+            columnClicked(x);   
+        });
         square.addEventListener("mouseover", function() {
             var x = getXIndex(this);
-            setColumnOpacity(x, "1");
+            if (board[HEIGHT - 1][x] == -1 && canClick) {
+                setColumnOpacity(x, "1");
+            } 
         });
         square.addEventListener("mouseout", function() {
             var x = getXIndex(this);
             setColumnOpacity(x, "0"); 
         });
     }
-
     canClick = true;
 }
 
+async function newGame() {
+    await drawAnimation();
+    location.href='game.html';
+}
 
 
 onLoad();
