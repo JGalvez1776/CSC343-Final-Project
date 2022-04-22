@@ -12,9 +12,12 @@ var moves = [];
 // - Save the moves log to replay games/leaderboards
 //      Look into localStorage
 // - Check diagonals to see if the game is over
-// - Show the current player's turn
 // - Add button to play again
 // - Maybe add an animation to the home screen
+// - Fix bug where game ends after a column is full then clicked
+//           FIXED
+// - Add outline to board 
+// - Add draw support
 
 
 // 7 wide 
@@ -45,8 +48,9 @@ function columnClicked(x) {
         }
         player = (player + 1) % 2;
         setPlayerColor(colors[player]);
-        canClick = true;
+        
     }
+    canClick = true;
 }
 
 function updateBoard(x, y, player) {
